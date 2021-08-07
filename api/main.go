@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -63,7 +64,11 @@ func main() {
 	})
 
 	r.GET("/stream", func(c *gin.Context) {
-		upgrader := websocket.Upgrader{}
+		upgrader := websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool {
+				return true
+			},
+		}
 
 		ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
