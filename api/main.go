@@ -59,6 +59,16 @@ func main() {
 						})
 					}
 				}
+
+			case *slackevents.ReactionAddedEvent:
+				for v := range connections {
+					v.WriteJSON(map[string]interface{}{
+						"type":    "reaction",
+						"emoji":   ev.Reaction,
+						"channel": ev.Item.Channel,
+						"user":    ev.User,
+					})
+				}
 			}
 		}
 	})
