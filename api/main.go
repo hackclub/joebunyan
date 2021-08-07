@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -13,6 +13,8 @@ import (
 )
 
 var connections map[*websocket.Conn]bool = make(map[*websocket.Conn]bool)
+
+var mutex = sync.Mutex{}
 
 func main() {
 	r := gin.Default()
@@ -48,26 +50,32 @@ func main() {
 			switch ev := innerEvent.Data.(type) {
 			case *slackevents.MessageEvent:
 				if ev.SubType == "" {
-					fmt.Println(ev.Text)
-
 					for v := range connections {
+						mutex.Lock()
+
 						v.WriteJSON(map[string]interface{}{
 							"type":    "message",
 							"text":    ev.Text,
 							"channel": ev.Channel,
 							"user":    ev.User,
 						})
+
+						mutex.Unlock()
 					}
 				}
 
 			case *slackevents.ReactionAddedEvent:
 				for v := range connections {
+					mutex.Lock()
+
 					v.WriteJSON(map[string]interface{}{
 						"type":    "reaction",
 						"emoji":   ev.Reaction,
 						"channel": ev.Item.Channel,
 						"user":    ev.User,
 					})
+
+					mutex.Unlock()
 				}
 			}
 		}
