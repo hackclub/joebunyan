@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -14,9 +15,26 @@ import (
 
 var connections map[*websocket.Conn]bool = make(map[*websocket.Conn]bool)
 
+// Prevents two messages from being broadcast simultaneously
 var mutex = sync.Mutex{}
 
 func main() {
+	go func() {
+		for {
+			for v := range connections {
+				mutex.Lock()
+
+				v.WriteJSON(map[string]interface{}{
+					"type": "ping",
+				})
+
+				mutex.Unlock()
+			}
+
+			time.Sleep(5 * time.Second)
+		}
+	}()
+
 	r := gin.Default()
 
 	r.POST("/slack/events", func(c *gin.Context) {
