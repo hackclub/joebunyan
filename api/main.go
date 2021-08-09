@@ -73,9 +73,7 @@ func main() {
 
 						v.WriteJSON(map[string]interface{}{
 							"type":    "message",
-							"text":    ev.Text,
 							"channel": ev.Channel,
-							"user":    ev.User,
 						})
 
 						mutex.Unlock()
