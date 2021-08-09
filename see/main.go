@@ -18,9 +18,7 @@ import (
 
 type event struct {
 	Channel string
-	Text    string
 	Type    string
-	User    string
 }
 
 func main() {
