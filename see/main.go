@@ -88,7 +88,7 @@ func main() {
 }
 
 // Take a string and if it should be the first four or last four characters, get the 32-bit FNV-1a hash encoding of the string
-// then convert that long number to a single digit and cap it at 8
+// then convert that long number to a single digit and cap it at 7
 func genLoc(str string, first bool) int {
 	fourChars := str[:4]
 	if !first {
@@ -100,8 +100,8 @@ func genLoc(str string, first bool) int {
 	if err != nil {
 		lumber.Error(err, "Failed to convert", fourChars, "to coordinate")
 	}
-	if loc > 8 {
-		return 8
+	if loc > 7 {
+		return 7
 	}
 	return loc
 }
