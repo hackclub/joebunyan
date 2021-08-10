@@ -85,8 +85,9 @@ func main() {
 					mutex.Lock()
 
 					v.WriteJSON(map[string]interface{}{
-						"type":    "reaction",
-						"channel": ev.Item.Channel,
+						"type":     "reaction",
+						"channel":  ev.Item.Channel,
+						"reaction": ev.Reaction,
 					})
 
 					mutex.Unlock()
