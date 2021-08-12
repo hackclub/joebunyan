@@ -1,0 +1,16 @@
+[Unit]
+Description=See the hackclub slack
+
+Wants=network.target
+After=syslog.target  network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/see
+Restart=always
+RestartSec=5
+KillMode=process
+User=pi
+
+[Install]
+WantedBy=multi-user.target
