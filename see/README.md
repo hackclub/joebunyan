@@ -15,3 +15,7 @@ Do you have your own raspberry pi and want to run this on it? Just follow these 
 3. Run `make deploy`
 4. SSH to the pi
 5. Run `./see`
+
+## Args
+
+Use the flag `--christmas` to turn message colors to red for a Christmas theme!

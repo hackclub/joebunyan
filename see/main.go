@@ -63,11 +63,17 @@ func main() {
 		// Setting pixel
 		x := genLoc(data.Channel, true)
 		y := genLoc(data.Channel, false)
+		var pixelColor color.Color
 		if data.Type == "message" {
-			fb.SetPixel(x, y, color.Red)
+			if len(os.Args) > 1 && os.Args[1] == "--christmas" {
+				pixelColor = color.Red
+			} else {
+				pixelColor = color.White
+			}
 		} else {
-			fb.SetPixel(x, y, color.Green)
+			pixelColor = color.Green
 		}
+		fb.SetPixel(x, y, pixelColor)
 
 		// Updating screen
 		err = screen.Draw(fb)
