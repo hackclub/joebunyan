@@ -64,7 +64,7 @@ func main() {
 		x := genLoc(data.Channel, true)
 		y := genLoc(data.Channel, false)
 		if data.Type == "message" {
-			fb.SetPixel(x, y, color.White)
+			fb.SetPixel(x, y, color.Red)
 		} else {
 			fb.SetPixel(x, y, color.Green)
 		}
